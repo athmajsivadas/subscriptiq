@@ -1,0 +1,31 @@
+date,account_name,amount,type,counterparty,category,original_currency,original_amount
+2024-01-05,Main Operating Account,5000.00,in,Acme Corporation,Revenue,USD,5000.00
+2024-01-07,Main Operating Account,-1200.00,out,Office Supplies Inc,Office Expenses,USD,1200.00
+2024-01-10,Main Operating Account,15000.00,in,TechStart LLC,Revenue,USD,15000.00
+2024-01-12,Main Operating Account,-3500.00,out,Cloud Services Pro,Software & Subscriptions,USD,3500.00
+2024-01-15,Main Operating Account,-850.00,out,Electric Company,Utilities,USD,850.00
+2024-01-18,Main Operating Account,8500.00,in,Global Partners,Revenue,USD,8500.00
+2024-01-20,Main Operating Account,-2100.00,out,Marketing Agency,Marketing,USD,2100.00
+2024-01-22,Main Operating Account,-4200.00,out,Rent Payment,Rent,USD,4200.00
+2024-01-25,Main Operating Account,12000.00,in,Enterprise Client,Revenue,USD,12000.00
+2024-01-28,Main Operating Account,-650.00,out,Internet Provider,Utilities,USD,650.00
+2024-02-01,Main Operating Account,7500.00,in,Consulting Services,Revenue,USD,7500.00
+2024-02-03,Main Operating Account,-1800.00,out,Legal Services,Professional Services,USD,1800.00
+2024-02-05,Main Operating Account,-950.00,out,Insurance Premium,Insurance,USD,950.00
+2024-02-08,Main Operating Account,22000.00,in,Major Contract,Revenue,USD,22000.00
+2024-02-10,Main Operating Account,-5200.00,out,Payroll Processing,Payroll,USD,5200.00
+2024-02-12,Main Operating Account,-1350.00,out,Office Equipment,Equipment,USD,1350.00
+2024-02-15,Main Operating Account,9800.00,in,Recurring Customer,Revenue,USD,9800.00
+2024-02-18,Main Operating Account,-2700.00,out,Travel Expenses,Travel,USD,2700.00
+2024-02-20,Main Operating Account,-890.00,out,Phone & Internet,Telecommunications,USD,890.00
+2024-02-22,Main Operating Account,18500.00,in,New Partnership,Revenue,USD,18500.00
+2024-02-25,Main Operating Account,-3100.00,out,Software Licenses,Software & Subscriptions,USD,3100.00
+2024-02-28,Main Operating Account,-4200.00,out,Rent Payment,Rent,USD,4200.00
+2024-03-01,Main Operating Account,11000.00,in,Project Payment,Revenue,USD,11000.00
+2024-03-05,Main Operating Account,-1450.00,out,Office Maintenance,Maintenance,USD,1450.00
+2024-03-08,Main Operating Account,16500.00,in,Quarterly Contract,Revenue,USD,16500.00
+2024-03-10,Main Operating Account,-2200.00,out,Advertising Campaign,Marketing,USD,2200.00
+2024-03-12,Main Operating Account,-780.00,out,Supplies & Materials,Office Expenses,USD,780.00
+2024-03-15,Main Operating Account,13500.00,in,Service Revenue,Revenue,USD,13500.00
+2024-03-18,Main Operating Account,-5800.00,out,Contractor Payment,Professional Services,USD,5800.00
+2024-03-20,Main Operating Account,-920.00,out,Utilities & Services,Utilities,USD,920.00

@@ -1,0 +1,6 @@
+Date,Amount,Category,Vendor,Project ID,Original Currency,Original Amount
+2025-01-15,250.00,Office Supplies,Office Depot,PROJ001,USD,250.00
+2025-01-20,1500.00,Software,Adobe,PROJ002,USD,1500.00
+2025-02-01,85.50,Travel,Uber,PROJ001,USD,85.50
+2025-02-10,3200.00,Marketing,Google Ads,PROJ003,EUR,3000.00
+2025-02-15,450.00,Utilities,Electric Co,,USD,450.00

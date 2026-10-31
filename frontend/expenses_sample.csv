@@ -1,0 +1,214 @@
+date,amount,category,vendor,project_id,original_currency,original_amount
+2024-01-05,1250.00,Office Supplies,Staples Inc,PROJ-001,USD,1250.00
+2024-01-08,299.99,Software & Subscriptions,Adobe Systems,,USD,299.99
+2024-01-10,5400.00,Marketing & Advertising,Google Ads,PROJ-002,USD,5400.00
+2024-01-12,850.00,Travel & Entertainment,Delta Airlines,PROJ-003,USD,850.00
+2024-01-15,3200.00,Professional Services,Legal Associates LLC,,USD,3200.00
+2024-01-18,450.00,Utilities,Pacific Gas & Electric,,USD,450.00
+2024-01-20,12500.00,Equipment,Dell Technologies,PROJ-001,USD,12500.00
+2024-01-22,1800.00,Insurance,State Farm Insurance,,USD,1800.00
+2024-01-25,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-01-28,750.00,Training & Development,LinkedIn Learning,,USD,750.00
+2024-02-01,325.50,Office Supplies,Amazon Business,PROJ-002,USD,325.50
+2024-02-03,149.99,Software & Subscriptions,Microsoft 365,,USD,149.99
+2024-02-05,2800.00,Marketing & Advertising,Facebook Ads,PROJ-001,USD,2800.00
+2024-02-08,1200.00,Travel & Entertainment,Marriott Hotels,PROJ-003,USD,1200.00
+2024-02-10,2500.00,Professional Services,Accounting Solutions Inc,,USD,2500.00
+2024-02-12,520.00,Utilities,Comcast Business,,USD,520.00
+2024-02-15,3400.00,Equipment,HP Inc,PROJ-002,USD,3400.00
+2024-02-18,1800.00,Insurance,Allstate Insurance,,USD,1800.00
+2024-02-20,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-02-22,950.00,Training & Development,Udemy Business,,USD,950.00
+2024-02-25,875.00,Office Supplies,Office Depot,PROJ-001,USD,875.00
+2024-02-28,99.99,Software & Subscriptions,Slack Technologies,,USD,99.99
+2024-03-02,4200.00,Marketing & Advertising,LinkedIn Ads,PROJ-003,USD,4200.00
+2024-03-05,650.00,Travel & Entertainment,United Airlines,PROJ-002,USD,650.00
+2024-03-08,4500.00,Professional Services,Marketing Agency Co,PROJ-001,USD,4500.00
+2024-03-10,480.00,Utilities,Pacific Gas & Electric,,USD,480.00
+2024-03-12,8900.00,Equipment,Lenovo,PROJ-003,USD,8900.00
+2024-03-15,1800.00,Insurance,State Farm Insurance,,USD,1800.00
+2024-03-18,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-03-20,1200.00,Training & Development,Coursera,,USD,1200.00
+2024-03-22,450.00,Office Supplies,Staples Inc,PROJ-002,USD,450.00
+2024-03-25,199.99,Software & Subscriptions,Zoom Video,,USD,199.99
+2024-03-28,3600.00,Marketing & Advertising,Twitter Ads,PROJ-001,USD,3600.00
+2024-04-01,980.00,Travel & Entertainment,Hilton Hotels,PROJ-003,USD,980.00
+2024-04-04,3800.00,Professional Services,IT Consulting Group,,USD,3800.00
+2024-04-07,550.00,Utilities,Comcast Business,,USD,550.00
+2024-04-10,15000.00,Equipment,Apple Inc,PROJ-002,USD,15000.00
+2024-04-12,1800.00,Insurance,Allstate Insurance,,USD,1800.00
+2024-04-15,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-04-18,850.00,Training & Development,Pluralsight,,USD,850.00
+2024-04-20,625.00,Office Supplies,Amazon Business,PROJ-001,USD,625.00
+2024-04-22,79.99,Software & Subscriptions,Dropbox Business,,USD,79.99
+2024-04-25,5200.00,Marketing & Advertising,Google Ads,PROJ-003,USD,5200.00
+2024-04-28,1150.00,Travel & Entertainment,American Airlines,PROJ-002,USD,1150.00
+2024-05-02,2900.00,Professional Services,Legal Associates LLC,,USD,2900.00
+2024-05-05,495.00,Utilities,Pacific Gas & Electric,,USD,495.00
+2024-05-08,6500.00,Equipment,Samsung Electronics,PROJ-001,USD,6500.00
+2024-05-10,1800.00,Insurance,State Farm Insurance,,USD,1800.00
+2024-05-12,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-05-15,1100.00,Training & Development,LinkedIn Learning,,USD,1100.00
+2024-05-18,380.00,Office Supplies,Office Depot,PROJ-003,USD,380.00
+2024-05-20,249.99,Software & Subscriptions,Adobe Systems,,USD,249.99
+2024-05-22,4800.00,Marketing & Advertising,Facebook Ads,PROJ-002,USD,4800.00
+2024-05-25,720.00,Travel & Entertainment,Southwest Airlines,PROJ-001,USD,720.00
+2024-05-28,3300.00,Professional Services,Accounting Solutions Inc,,USD,3300.00
+2024-06-01,535.00,Utilities,Comcast Business,,USD,535.00
+2024-06-03,4200.00,Equipment,Dell Technologies,PROJ-003,USD,4200.00
+2024-06-05,1800.00,Insurance,Allstate Insurance,,USD,1800.00
+2024-06-08,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-06-10,950.00,Training & Development,Udemy Business,,USD,950.00
+2024-06-12,725.00,Office Supplies,Staples Inc,PROJ-002,USD,725.00
+2024-06-15,159.99,Software & Subscriptions,Microsoft 365,,USD,159.99
+2024-06-18,6400.00,Marketing & Advertising,LinkedIn Ads,PROJ-001,USD,6400.00
+2024-06-20,890.00,Travel & Entertainment,Hyatt Hotels,PROJ-003,USD,890.00
+2024-06-22,4100.00,Professional Services,Marketing Agency Co,PROJ-002,USD,4100.00
+2024-06-25,510.00,Utilities,Pacific Gas & Electric,,USD,510.00
+2024-06-28,11200.00,Equipment,HP Inc,PROJ-001,USD,11200.00
+2024-07-02,1800.00,Insurance,State Farm Insurance,,USD,1800.00
+2024-07-05,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-07-08,1300.00,Training & Development,Coursera,,USD,1300.00
+2024-07-10,540.00,Office Supplies,Amazon Business,PROJ-003,USD,540.00
+2024-07-12,119.99,Software & Subscriptions,Slack Technologies,,USD,119.99
+2024-07-15,3900.00,Marketing & Advertising,Google Ads,PROJ-002,USD,3900.00
+2024-07-18,1050.00,Travel & Entertainment,Delta Airlines,PROJ-001,USD,1050.00
+2024-07-20,2800.00,Professional Services,IT Consulting Group,,USD,2800.00
+2024-07-22,565.00,Utilities,Comcast Business,,USD,565.00
+2024-07-25,7800.00,Equipment,Lenovo,PROJ-003,USD,7800.00
+2024-07-28,1800.00,Insurance,Allstate Insurance,,USD,1800.00
+2024-08-01,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-08-03,780.00,Training & Development,Pluralsight,,USD,780.00
+2024-08-05,495.00,Office Supplies,Office Depot,PROJ-002,USD,495.00
+2024-08-08,189.99,Software & Subscriptions,Zoom Video,,USD,189.99
+2024-08-10,5600.00,Marketing & Advertising,Facebook Ads,PROJ-001,USD,5600.00
+2024-08-12,960.00,Travel & Entertainment,United Airlines,PROJ-003,USD,960.00
+2024-08-15,3500.00,Professional Services,Legal Associates LLC,,USD,3500.00
+2024-08-18,525.00,Utilities,Pacific Gas & Electric,,USD,525.00
+2024-08-20,13500.00,Equipment,Apple Inc,PROJ-002,USD,13500.00
+2024-08-22,1800.00,Insurance,State Farm Insurance,,USD,1800.00
+2024-08-25,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-08-28,1150.00,Training & Development,LinkedIn Learning,,USD,1150.00
+2024-09-02,680.00,Office Supplies,Staples Inc,PROJ-001,USD,680.00
+2024-09-05,89.99,Software & Subscriptions,Dropbox Business,,USD,89.99
+2024-09-08,4500.00,Marketing & Advertising,LinkedIn Ads,PROJ-003,USD,4500.00
+2024-09-10,820.00,Travel & Entertainment,Marriott Hotels,PROJ-002,USD,820.00
+2024-09-12,2950.00,Professional Services,Accounting Solutions Inc,,USD,2950.00
+2024-09-15,545.00,Utilities,Comcast Business,,USD,545.00
+2024-09-18,5900.00,Equipment,Samsung Electronics,PROJ-001,USD,5900.00
+2024-09-20,1800.00,Insurance,Allstate Insurance,,USD,1800.00
+2024-09-22,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-09-25,920.00,Training & Development,Udemy Business,,USD,920.00
+2024-09-28,415.00,Office Supplies,Amazon Business,PROJ-003,USD,415.00
+2024-10-01,269.99,Software & Subscriptions,Adobe Systems,,USD,269.99
+2024-10-03,6200.00,Marketing & Advertising,Google Ads,PROJ-002,USD,6200.00
+2024-10-05,1100.00,Travel & Entertainment,American Airlines,PROJ-001,USD,1100.00
+2024-10-08,4200.00,Professional Services,Marketing Agency Co,PROJ-003,USD,4200.00
+2024-10-10,555.00,Utilities,Pacific Gas & Electric,,USD,555.00
+2024-10-12,9800.00,Equipment,Dell Technologies,PROJ-002,USD,9800.00
+2024-10-15,1800.00,Insurance,State Farm Insurance,,USD,1800.00
+2024-10-18,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-10-20,1050.00,Training & Development,Coursera,,USD,1050.00
+2024-10-22,590.00,Office Supplies,Office Depot,PROJ-001,USD,590.00
+2024-10-25,139.99,Software & Subscriptions,Microsoft 365,,USD,139.99
+2024-10-28,5300.00,Marketing & Advertising,Twitter Ads,PROJ-003,USD,5300.00
+2024-11-01,750.00,Travel & Entertainment,Southwest Airlines,PROJ-002,USD,750.00
+2024-11-03,3100.00,Professional Services,IT Consulting Group,,USD,3100.00
+2024-11-05,575.00,Utilities,Comcast Business,,USD,575.00
+2024-11-08,8600.00,Equipment,HP Inc,PROJ-001,USD,8600.00
+2024-11-10,1800.00,Insurance,Allstate Insurance,,USD,1800.00
+2024-11-12,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-11-15,880.00,Training & Development,Pluralsight,,USD,880.00
+2024-11-18,465.00,Office Supplies,Staples Inc,PROJ-003,USD,465.00
+2024-11-20,109.99,Software & Subscriptions,Slack Technologies,,USD,109.99
+2024-11-22,4700.00,Marketing & Advertising,Facebook Ads,PROJ-002,USD,4700.00
+2024-11-25,980.00,Travel & Entertainment,Hilton Hotels,PROJ-001,USD,980.00
+2024-11-28,2700.00,Professional Services,Legal Associates LLC,,USD,2700.00
+2024-12-02,540.00,Utilities,Pacific Gas & Electric,,USD,540.00
+2024-12-05,16500.00,Equipment,Apple Inc,PROJ-003,USD,16500.00
+2024-12-08,1800.00,Insurance,State Farm Insurance,,USD,1800.00
+2024-12-10,8500.00,Rent & Facilities,Downtown Properties LLC,,USD,8500.00
+2024-12-12,1250.00,Training & Development,LinkedIn Learning,,USD,1250.00
+2024-12-15,735.00,Office Supplies,Amazon Business,PROJ-002,USD,735.00
+2024-12-18,199.99,Software & Subscriptions,Zoom Video,,USD,199.99
+2024-12-20,7100.00,Marketing & Advertising,LinkedIn Ads,PROJ-001,USD,7100.00
+2024-12-22,1180.00,Travel & Entertainment,Delta Airlines,PROJ-003,USD,1180.00
+2024-12-25,3600.00,Professional Services,Accounting Solutions Inc,,USD,3600.00
+2024-12-28,585.00,Utilities,Comcast Business,,USD,585.00
+2024-01-07,425.00,Office Supplies,Staples Inc,PROJ-002,USD,425.00
+2024-01-14,89.99,Software & Subscriptions,Dropbox Business,,USD,89.99
+2024-01-21,3200.00,Marketing & Advertising,Google Ads,PROJ-001,USD,3200.00
+2024-01-29,680.00,Travel & Entertainment,United Airlines,PROJ-003,USD,680.00
+2024-02-06,2200.00,Professional Services,Marketing Agency Co,PROJ-002,USD,2200.00
+2024-02-14,460.00,Utilities,Pacific Gas & Electric,,USD,460.00
+2024-02-21,5600.00,Equipment,Samsung Electronics,PROJ-001,USD,5600.00
+2024-02-27,820.00,Training & Development,Udemy Business,,USD,820.00
+2024-03-04,350.00,Office Supplies,Office Depot,PROJ-003,USD,350.00
+2024-03-11,129.99,Software & Subscriptions,Adobe Systems,,USD,129.99
+2024-03-17,4100.00,Marketing & Advertising,Facebook Ads,PROJ-002,USD,4100.00
+2024-03-24,890.00,Travel & Entertainment,Marriott Hotels,PROJ-001,USD,890.00
+2024-03-30,3400.00,Professional Services,IT Consulting Group,,USD,3400.00
+2024-04-06,515.00,Utilities,Comcast Business,,USD,515.00
+2024-04-13,7200.00,Equipment,Dell Technologies,PROJ-003,USD,7200.00
+2024-04-19,960.00,Training & Development,Coursera,,USD,960.00
+2024-04-26,580.00,Office Supplies,Amazon Business,PROJ-002,USD,580.00
+2024-05-03,169.99,Software & Subscriptions,Microsoft 365,,USD,169.99
+2024-05-09,5800.00,Marketing & Advertising,LinkedIn Ads,PROJ-001,USD,5800.00
+2024-05-16,720.00,Travel & Entertainment,American Airlines,PROJ-003,USD,720.00
+2024-05-23,2850.00,Professional Services,Legal Associates LLC,,USD,2850.00
+2024-05-30,530.00,Utilities,Pacific Gas & Electric,,USD,530.00
+2024-06-06,10500.00,Equipment,Lenovo,PROJ-002,USD,10500.00
+2024-06-13,1050.00,Training & Development,Pluralsight,,USD,1050.00
+2024-06-19,645.00,Office Supplies,Staples Inc,PROJ-001,USD,645.00
+2024-06-26,99.99,Software & Subscriptions,Slack Technologies,,USD,99.99
+2024-07-03,3700.00,Marketing & Advertising,Google Ads,PROJ-003,USD,3700.00
+2024-07-09,850.00,Travel & Entertainment,Southwest Airlines,PROJ-002,USD,850.00
+2024-07-16,3250.00,Professional Services,Accounting Solutions Inc,,USD,3250.00
+2024-07-23,560.00,Utilities,Comcast Business,,USD,560.00
+2024-07-30,6800.00,Equipment,HP Inc,PROJ-001,USD,6800.00
+2024-08-06,890.00,Training & Development,LinkedIn Learning,,USD,890.00
+2024-08-13,485.00,Office Supplies,Office Depot,PROJ-003,USD,485.00
+2024-08-19,179.99,Software & Subscriptions,Zoom Video,,USD,179.99
+2024-08-26,4900.00,Marketing & Advertising,Twitter Ads,PROJ-002,USD,4900.00
+2024-09-03,920.00,Travel & Entertainment,Hyatt Hotels,PROJ-001,USD,920.00
+2024-09-09,3800.00,Professional Services,Marketing Agency Co,PROJ-003,USD,3800.00
+2024-09-16,525.00,Utilities,Pacific Gas & Electric,,USD,525.00
+2024-09-23,12800.00,Equipment,Apple Inc,PROJ-002,USD,12800.00
+2024-09-30,1100.00,Training & Development,Udemy Business,,USD,1100.00
+2024-10-07,615.00,Office Supplies,Amazon Business,PROJ-001,USD,615.00
+2024-10-14,149.99,Software & Subscriptions,Dropbox Business,,USD,149.99
+2024-10-21,5500.00,Marketing & Advertising,Facebook Ads,PROJ-003,USD,5500.00
+2024-10-28,1020.00,Travel & Entertainment,Delta Airlines,PROJ-002,USD,1020.00
+2024-11-04,2600.00,Professional Services,IT Consulting Group,,USD,2600.00
+2024-11-11,550.00,Utilities,Comcast Business,,USD,550.00
+2024-11-18,8900.00,Equipment,Samsung Electronics,PROJ-001,USD,8900.00
+2024-11-25,975.00,Training & Development,Coursera,,USD,975.00
+2024-12-03,520.00,Office Supplies,Staples Inc,PROJ-003,USD,520.00
+2024-12-09,119.99,Software & Subscriptions,Adobe Systems,,USD,119.99
+2024-12-16,6300.00,Marketing & Advertising,LinkedIn Ads,PROJ-002,USD,6300.00
+2024-12-23,1080.00,Travel & Entertainment,United Airlines,PROJ-001,USD,1080.00
+2024-12-30,3900.00,Professional Services,Legal Associates LLC,,USD,3900.00
+2024-01-11,1200.00,Marketing & Advertising,Social Media Co,PROJ-001,EUR,1100.00
+2024-02-16,2400.00,Professional Services,London Consulting,PROJ-002,GBP,1900.00
+2024-03-19,850.00,Travel & Entertainment,Paris Hotel Group,PROJ-003,EUR,780.00
+2024-04-23,3200.00,Equipment,Berlin Tech GmbH,PROJ-001,EUR,2950.00
+2024-05-27,1650.00,Marketing & Advertising,Dublin Digital,PROJ-002,EUR,1520.00
+2024-06-29,2850.00,Professional Services,Manchester Partners,PROJ-003,GBP,2250.00
+2024-07-31,920.00,Travel & Entertainment,Rome Hotels SRL,PROJ-001,EUR,850.00
+2024-08-27,4100.00,Equipment,Munich Electronics,PROJ-002,EUR,3780.00
+2024-09-29,1880.00,Marketing & Advertising,Amsterdam Media,PROJ-003,EUR,1730.00
+2024-10-30,3350.00,Professional Services,Edinburgh Legal,PROJ-001,GBP,2650.00
+2024-11-27,1150.00,Travel & Entertainment,Brussels Travel,PROJ-002,EUR,1060.00
+2024-12-26,5200.00,Equipment,Zurich Tech AG,PROJ-003,EUR,4800.00
+2024-01-16,675.00,Office Supplies,Vienna Office Supply,PROJ-001,EUR,620.00
+2024-02-19,1420.00,Software & Subscriptions,Stockholm Software AB,PROJ-002,EUR,1310.00
+2024-03-26,2750.00,Marketing & Advertising,Copenhagen Digital,PROJ-003,EUR,2530.00
+2024-04-29,890.00,Travel & Entertainment,Oslo Airlines,PROJ-001,EUR,820.00
+2024-05-31,3680.00,Professional Services,Helsinki Advisors,PROJ-002,EUR,3390.00
+2024-06-30,1240.00,Equipment,Warsaw Tech,PROJ-003,EUR,1140.00
+2024-07-27,2100.00,Marketing & Advertising,Prague Media,PROJ-001,EUR,1935.00
+2024-08-29,950.00,Travel & Entertainment,Budapest Hotels,PROJ-002,EUR,875.00
+2024-09-27,4250.00,Professional Services,Barcelona Consulting,PROJ-003,EUR,3915.00
+2024-10-29,1580.00,Equipment,Lisbon Electronics,PROJ-001,EUR,1455.00
+2024-11-29,2850.00,Marketing & Advertising,Athens Digital,PROJ-002,EUR,2625.00
+2024-12-27,1125.00,Travel & Entertainment,Milan Travel SRL,PROJ-003,EUR,1035.00

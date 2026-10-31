@@ -1,0 +1,258 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Modern Financial Dashboard Design System */
+
+@layer base {
+  :root {
+    --font-heading-weight: 600;
+    --font-body-weight: 400;
+
+    /* === Theme-overridable tokens (19 tokens, oklch) === */
+    --color-background: oklch(100% 0 0);
+    --color-foreground: oklch(13% 0.04 265);
+    --color-card: oklch(100% 0 0);
+    --color-card-foreground: oklch(13% 0.04 265);
+    --color-popover: oklch(100% 0 0);
+    --color-popover-foreground: oklch(13% 0.04 265);
+    --color-primary: oklch(52% 0.2 260);
+    --color-primary-foreground: oklch(100% 0 0);
+    --color-secondary: oklch(62% 0.19 335);
+    --color-secondary-foreground: oklch(100% 0 0);
+    --color-muted: oklch(92% 0 0);
+    --color-muted-foreground: oklch(55% 0.015 250);
+    --color-accent: oklch(98% 0 0);
+    --color-accent-foreground: oklch(13% 0 0);
+    --color-destructive: oklch(55% 0.22 25);
+    --color-destructive-foreground: oklch(100% 0 0);
+    --color-border: oklch(85% 0.015 250);
+    --color-input: oklch(85% 0.015 250);
+    --color-ring: oklch(52% 0.2 260);
+
+    /* === Template-specific palette scales (NOT overridden by theme) === */
+
+    /* Primary - Blue System */
+    --primary-50: 210 100% 95%;
+    --primary-100: 210 100% 90%;
+    --primary-200: 210 100% 80%;
+    --primary-300: 210 100% 70%;
+    --primary-400: 210 100% 60%;
+    --primary-500: 210 100% 50%;
+    --primary-600: 210 100% 40%;
+    --primary-700: 210 100% 30%;
+    --primary-800: 217 91% 20%;
+    --primary-900: 222 84% 10%;
+
+    /* Secondary - Pink/Magenta System */
+    --secondary-50: 330 81% 95%;
+    --secondary-100: 330 81% 85%;
+    --secondary-200: 330 81% 75%;
+    --secondary-300: 330 81% 65%;
+    --secondary-400: 330 81% 60%;
+    --secondary-500: 330 81% 55%;
+    --secondary-600: 330 81% 45%;
+    --secondary-700: 330 81% 35%;
+    --secondary-800: 330 81% 25%;
+    --secondary-900: 330 81% 15%;
+
+    /* Success - Green System (status color — not themed) */
+    --success: 142 76% 45%;
+    --success-foreground: 0 0% 100%;
+    --success-50: 142 76% 95%;
+    --success-100: 142 76% 85%;
+    --success-200: 142 76% 75%;
+    --success-300: 142 76% 65%;
+    --success-400: 142 76% 55%;
+    --success-500: 142 76% 45%;
+    --success-600: 142 76% 35%;
+    --success-700: 142 76% 25%;
+    --success-800: 142 76% 15%;
+    --success-900: 142 76% 8%;
+
+    /* Warning - Orange System (status color — not themed) */
+    --warning: 25 95% 55%;
+    --warning-foreground: 0 0% 100%;
+    --warning-50: 25 95% 95%;
+    --warning-100: 25 95% 85%;
+    --warning-200: 25 95% 75%;
+    --warning-300: 25 95% 65%;
+    --warning-400: 25 95% 60%;
+    --warning-500: 25 95% 55%;
+    --warning-600: 25 95% 45%;
+    --warning-700: 25 95% 35%;
+    --warning-800: 25 95% 25%;
+    --warning-900: 25 95% 15%;
+
+    /* Error - Red System (status color — not themed) */
+    --error-50: 0 84% 95%;
+    --error-100: 0 84% 85%;
+    --error-200: 0 84% 75%;
+    --error-300: 0 84% 65%;
+    --error-400: 0 84% 60%;
+    --error-500: 0 84% 50%;
+    --error-600: 0 84% 40%;
+    --error-700: 0 84% 30%;
+    --error-800: 0 84% 20%;
+    --error-900: 0 84% 10%;
+
+    /* Neutral - Blue-Gray System */
+    --neutral-50: 220 13% 95%;
+    --neutral-100: 220 13% 90%;
+    --neutral-200: 220 13% 80%;
+    --neutral-300: 220 13% 70%;
+    --neutral-400: 220 13% 60%;
+    --neutral-500: 220 13% 50%;
+    --neutral-600: 220 13% 40%;
+    --neutral-700: 220 13% 30%;
+    --neutral-800: 220 13% 20%;
+    --neutral-900: 220 13% 10%;
+
+    /* Shades - Pure Grays */
+    --shade-50: 0 0% 98%;
+    --shade-100: 0 0% 90%;
+    --shade-200: 0 0% 80%;
+    --shade-300: 0 0% 70%;
+    --shade-400: 0 0% 60%;
+    --shade-500: 0 0% 50%;
+    --shade-600: 0 0% 40%;
+    --shade-700: 0 0% 30%;
+    --shade-800: 0 0% 15%;
+    --shade-900: 0 0% 5%;
+
+    /* Card hover */
+    --card-hover: 220 13% 96%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, var(--color-primary), color-mix(in oklch, var(--color-primary) 70%, white));
+    --gradient-secondary: linear-gradient(135deg, var(--color-secondary), color-mix(in oklch, var(--color-secondary) 70%, white));
+    --gradient-success: linear-gradient(135deg, hsl(142 69% 58%), hsl(142 69% 70%));
+    --gradient-card: linear-gradient(135deg, var(--color-card), var(--color-muted));
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px hsl(220 13% 18% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(220 13% 18% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(220 13% 18% / 0.1);
+    --shadow-primary: 0 4px 14px hsl(210 100% 56% / 0.25);
+
+    /* Animation */
+    --transition-all: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s ease-out;
+
+    --radius: 8px;
+
+    /* Sidebar — derives from theme tokens */
+    --sidebar-background: var(--color-muted);
+    --sidebar-foreground: var(--color-foreground);
+    --sidebar-primary: var(--color-primary);
+    --sidebar-primary-foreground: var(--color-primary-foreground);
+    --sidebar-accent: var(--color-accent);
+    --sidebar-accent-foreground: var(--color-accent-foreground);
+    --sidebar-border: var(--color-border);
+    --sidebar-ring: var(--color-ring);
+  }
+
+  .dark {
+    --color-background: oklch(13% 0 0);
+    --color-foreground: oklch(98% 0 0);
+    --color-card: oklch(20% 0 0);
+    --color-card-foreground: oklch(98% 0 0);
+    --color-popover: oklch(20% 0 0);
+    --color-popover-foreground: oklch(98% 0 0);
+    --color-primary: oklch(65% 0.17 255);
+    --color-primary-foreground: oklch(13% 0 0);
+    --color-secondary: oklch(68% 0.16 335);
+    --color-secondary-foreground: oklch(13% 0 0);
+    --color-muted: oklch(20% 0 0);
+    --color-muted-foreground: oklch(60% 0.015 250);
+    --color-accent: oklch(30% 0 0);
+    --color-accent-foreground: oklch(98% 0 0);
+    --color-destructive: oklch(60% 0.2 25);
+    --color-destructive-foreground: oklch(98% 0 0);
+    --color-border: oklch(30% 0 0);
+    --color-input: oklch(30% 0 0);
+    --color-ring: oklch(65% 0.17 255);
+
+    --card-hover: var(--shade-700);
+
+    --sidebar-background: var(--color-muted);
+    --sidebar-foreground: var(--color-foreground);
+    --sidebar-primary: var(--color-primary);
+    --sidebar-primary-foreground: var(--color-primary-foreground);
+    --sidebar-accent: var(--color-accent);
+    --sidebar-accent-foreground: var(--color-accent-foreground);
+    --sidebar-border: var(--color-border);
+    --sidebar-ring: var(--color-ring);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body, Inter), system-ui, sans-serif;
+    font-weight: var(--font-body-weight);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading, Manrope), system-ui, sans-serif;
+    font-weight: var(--font-heading-weight);
+  }
+
+  a, button, input, label {
+    font-family: var(--font-heading, Manrope), system-ui, sans-serif;
+  }
+
+  h1 { font-size: 32px; line-height: 38.4px; }
+  h2 { font-size: 28px; line-height: 33.6px; }
+  h3 { font-size: 24px; line-height: 28.8px; }
+  h4 { font-size: 20px; line-height: 24px; }
+  h5 { font-size: 18px; line-height: 21.6px; }
+  h6 { font-size: 16px; line-height: 19.2px; }
+
+  .typo-body-large { font-family: var(--font-body, 'Inter'), sans-serif; font-weight: 400; font-size: 16px; line-height: 24px; }
+  .typo-body { font-family: var(--font-body, 'Inter'), sans-serif; font-weight: 400; font-size: 14px; line-height: 20px; }
+  .typo-body-small { font-family: var(--font-body, 'Inter'), sans-serif; font-weight: 400; font-size: 12px; line-height: 18px; }
+  .typo-body-xs { font-family: var(--font-body, 'Inter'), sans-serif; font-weight: 400; font-size: 10px; line-height: 14px; }
+  .typo-button { font-family: var(--font-body, 'Inter'), sans-serif; font-weight: 500; font-size: 14px; line-height: 14px; }
+  .typo-button-small { font-family: var(--font-body, 'Inter'), sans-serif; font-weight: 500; font-size: 12px; line-height: 12px; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--color-muted); }
+  ::-webkit-scrollbar-thumb { background: color-mix(in oklch, var(--color-muted-foreground) 30%, transparent); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: color-mix(in oklch, var(--color-muted-foreground) 50%, transparent); }
+
+  .recharts-tooltip-wrapper { z-index: 9999 !important; pointer-events: none; }
+  .recharts-tooltip-wrapper > * { pointer-events: auto; }
+}
+
+@layer utilities {
+  .bg-primary-light { background: color-mix(in oklch, var(--color-primary) 10%, transparent); }
+  .bg-primary-light-20 { background: color-mix(in oklch, var(--color-primary) 20%, transparent); }
+  .bg-primary-light-5 { background: color-mix(in oklch, var(--color-primary) 5%, transparent); }
+  .bg-secondary-light { background: color-mix(in oklch, var(--color-secondary) 10%, transparent); }
+  .bg-secondary-light-20 { background: color-mix(in oklch, var(--color-secondary) 20%, transparent); }
+  .bg-primary-light-20 { background: color-mix(in oklch, var(--color-primary) 20%, transparent); }
+  .hover\:bg-primary-light-20:hover { background: color-mix(in oklch, var(--color-primary) 20%, transparent); }
+  .hover\:bg-secondary-light-20:hover { background: color-mix(in oklch, var(--color-secondary) 20%, transparent); }
+  .hover\:bg-primary-hover:hover { background: color-mix(in oklch, var(--color-primary) 80%, transparent); }
+  .hover\:bg-secondary-hover:hover { background: color-mix(in oklch, var(--color-secondary) 80%, transparent); }
+  .hover\:bg-secondary-hover-90:hover { background: color-mix(in oklch, var(--color-secondary) 90%, transparent); }
+  .hover\:text-primary-hover:hover { color: color-mix(in oklch, var(--color-primary) 80%, transparent); }
+  .bg-muted-50 { background: color-mix(in oklch, var(--color-muted) 50%, transparent); }
+  .bg-muted-30 { background: color-mix(in oklch, var(--color-muted) 30%, transparent); }
+  .hover\:bg-muted-hover:hover { background: color-mix(in oklch, var(--color-muted) 80%, transparent); }
+  .hover\:bg-muted-50:hover { background: color-mix(in oklch, var(--color-muted) 50%, transparent); }
+  .active\:bg-muted-active:active { background: color-mix(in oklch, var(--color-muted) 70%, transparent); }
+  .hover\:bg-destructive-hover:hover { background: color-mix(in oklch, var(--color-destructive) 90%, transparent); }
+  .hover\:bg-destructive-20:hover { background: color-mix(in oklch, var(--color-destructive) 20%, transparent); }
+  .bg-destructive-hover { background: color-mix(in oklch, var(--color-destructive) 80%, transparent); }
+  .bg-accent-50 { background: color-mix(in oklch, var(--color-accent) 50%, transparent); }
+  .bg-background-95 { background: color-mix(in oklch, var(--color-background) 95%, transparent); }
+  .bg-background-60 { background: color-mix(in oklch, var(--color-background) 60%, transparent); }
+  .text-foreground-50 { color: color-mix(in oklch, var(--color-foreground) 50%, transparent); }
+}
