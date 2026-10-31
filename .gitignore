@@ -1,9 +1,28 @@
-.env
+# Virtualenv
+venv/
+backend/venv/
+.venv/
 __pycache__/
 *.pyc
-venv/
-.venv/
+
+# Env files (NEVER commit .env)
+.env
+*.env
+!.env.example
+
+# IDE & Editor
+.vscode/
+.idea/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+
+# Node
 node_modules/
 dist/
-.idea/
-.vscode/
+build/
