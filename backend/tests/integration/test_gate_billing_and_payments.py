@@ -35,11 +35,6 @@ def override_get_db():
 from app.main import app
 app.dependency_overrides[get_db] = override_get_db
 
-@pytest.fixture(autouse=True)
-def setup_db():
-    Base.metadata.create_all(bind=engine_test)
-    yield
-
 def create_active_due_subscription(db, sub_num, start_d=None, cycle="monthly", price=Decimal("1000.00"), tax_rate=Decimal("18.00")):
     today = start_d or today_ist()
     cust = Customer(company_name=f"Org-{uuid.uuid4().hex[:6]}")

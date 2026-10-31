@@ -23,11 +23,6 @@ def override_get_db():
 
 app.dependency_overrides[get_db] = override_get_db
 
-@pytest.fixture(autouse=True)
-def ensure_schema():
-    Base.metadata.create_all(bind=engine_test)
-    yield
-
 client = TestClient(app)
 
 def test_registration_and_duplicate_email():

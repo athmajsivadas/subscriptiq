@@ -5,10 +5,17 @@ from sqlalchemy.exc import IntegrityError
 from app.core.config import settings
 
 def test_alembic_upgrade_downgrade_cycle():
-    """Verify on the TEST database: upgrade head, downgrade base, upgrade head."""
-    test_db_url = settings.TEST_DATABASE_URL
+    """Verify on a dedicated isolated migration database: upgrade head, downgrade base, upgrade head."""
+    iso_db_url = "postgresql+psycopg://subscriptiq:subscriptiq@127.0.0.1:5432/subscriptiq_migration_test"
+    
+    # Ensure fresh isolated database
+    eng = create_engine(iso_db_url)
+    with eng.connect() as c:
+        c.execute(text("DROP SCHEMA public CASCADE; CREATE SCHEMA public;"))
+        c.commit()
+
     env = {
-        "DATABASE_URL": test_db_url,
+        "DATABASE_URL": iso_db_url,
         "PYTHONPATH": "backend",
     }
     import os

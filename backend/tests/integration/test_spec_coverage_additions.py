@@ -34,11 +34,6 @@ def override_get_db():
 app.dependency_overrides[get_db] = override_get_db
 client = TestClient(app)
 
-@pytest.fixture(autouse=True)
-def ensure_schema():
-    Base.metadata.create_all(bind=engine_test)
-    yield
-
 def make_admin():
     admin_id = uuid.uuid4()
     with TestingSessionLocal() as db:
