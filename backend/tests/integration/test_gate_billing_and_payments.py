@@ -1,7 +1,7 @@
 import uuid
 from datetime import date, timedelta
 from decimal import Decimal
-from threading import Thread
+from threading import Thread, Barrier
 import pytest
 from sqlalchemy import create_engine, select, func
 from sqlalchemy.orm import sessionmaker
@@ -70,8 +70,10 @@ def test_gate_concurrent_billing_creates_one_invoice():
         sub = create_active_due_subscription(db, f"SUB-GATE-CONC-{uuid.uuid4().hex[:6]}", today)
         sub_id = sub.id
 
+    barrier = Barrier(2)
     results = []
     def worker():
+        barrier.wait()
         with TestingSessionLocal() as s:
             inv = generate_invoice_for_subscription(s, sub_id, today)
             results.append(inv)
@@ -164,7 +166,7 @@ def test_gate_concurrent_payments_cannot_overpay():
         staff = User(id=staff_id, full_name="Staff", email=f"stf_{staff_id.hex[:6]}@test.com", password_hash="hash", role="staff", is_active=True)
         db.add(staff)
         sub = create_active_due_subscription(db, f"SUB-PAY-CONC-{uuid.uuid4().hex[:6]}")
-        # Insert confirmed invoice with balance 100.00
+        # Insert confirmed invoice with balance 1000.00
         inv = Invoice(
             invoice_number=f"INV-CONC-{uuid.uuid4().hex[:6]}",
             customer_id=sub.customer_id,
@@ -173,9 +175,9 @@ def test_gate_concurrent_payments_cannot_overpay():
             billing_period_end=today_ist() + timedelta(days=30),
             issue_date=today_ist(),
             due_date=today_ist() + timedelta(days=15),
-            grand_total=Decimal("100.00"),
+            grand_total=Decimal("1000.00"),
             amount_paid=Decimal("0.00"),
-            balance_due=Decimal("100.00"),
+            balance_due=Decimal("1000.00"),
             status="confirmed",
         )
         db.add(inv)
@@ -191,15 +193,19 @@ def test_gate_concurrent_payments_cannot_overpay():
     staff_token = create_access_token(str(staff_id), "staff")
     headers = {"Authorization": f"Bearer {staff_token}"}
 
+    barrier = Barrier(2)
     statuses = []
-    # Both try to pay 80.00 (Total = 160.00 > 100.00)
+    responses = []
+    # Both try to pay 700.00 (Total = 1400.00 > 1000.00)
     def pay_worker():
+        barrier.wait()
         res = client.post(
             "/api/payments",
             headers=headers,
-            json={"invoice_id": str(inv_id), "amount": 80.00, "method": "card"},
+            json={"invoice_id": str(inv_id), "amount": 700.00, "method": "card"},
         )
         statuses.append(res.status_code)
+        responses.append(res.json())
 
     t1 = Thread(target=pay_worker)
     t2 = Thread(target=pay_worker)
@@ -209,12 +215,14 @@ def test_gate_concurrent_payments_cannot_overpay():
     # One succeeds (201), the other fails with OVERPAYMENT (422)
     assert 201 in statuses
     assert 422 in statuses
+    err_res = next(r for r in responses if "error" in r)
+    assert err_res["error"]["code"] == "OVERPAYMENT"
 
     with TestingSessionLocal() as db:
         db.expire_all()
         check_inv = db.get(Invoice, inv_id)
-        assert check_inv.amount_paid == Decimal("80.00")
-        assert check_inv.balance_due == Decimal("20.00")
+        assert check_inv.amount_paid == Decimal("700.00")
+        assert check_inv.balance_due == Decimal("300.00")
         assert check_inv.status == "confirmed"
 
 # GATE TEST 5: Idempotency replay and mismatch
@@ -306,7 +314,9 @@ def test_gate_discount_usage_limit_not_exceeded_concurrent():
         sub2 = create_active_due_subscription(db, f"SUB-DISC-2-{uuid.uuid4().hex[:6]}", today)
         sub1_id, sub2_id = sub1.id, sub2.id
 
+    barrier = Barrier(2)
     def bill_worker(s_id):
+        barrier.wait()
         with TestingSessionLocal() as session:
             generate_invoice_for_subscription(session, s_id, today)
 
@@ -319,6 +329,7 @@ def test_gate_discount_usage_limit_not_exceeded_concurrent():
         db.expire_all()
         d_fresh = db.get(Discount, disc_id)
         # Usage count cannot exceed limit 1
+        assert d_fresh.usage_count <= d_fresh.usage_limit
         assert d_fresh.usage_count == 1
         # Exactly one invoice got the discount of 500.00
         inv1 = db.execute(select(Invoice).where(Invoice.subscription_id == sub1_id)).scalar_one_or_none()
