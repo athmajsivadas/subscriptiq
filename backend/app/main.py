@@ -3,14 +3,28 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+
 from app.core.config import settings
 from app.core.errors import AppError, envelope
+from app.routers.auth import router as auth_router, limiter
 
 app = FastAPI(
     title="SubscriptIQ API",
     description="Subscription Management System Backend",
     version="1.0.0",
 )
+
+app.state.limiter = limiter
+
+# Rate limit exceeded handler to return section 6.4 envelope
+@app.exception_handler(RateLimitExceeded)
+async def rate_limit_handler(request: Request, exc: RateLimitExceeded):
+    return JSONResponse(
+        status_code=429,
+        content=envelope("RATE_LIMIT_EXCEEDED", "Rate limit exceeded. Please try again later."),
+    )
 
 # CORS restricted strictly to FRONTEND_URL
 app.add_middleware(
@@ -54,6 +68,9 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
             {"errors": exc.errors()},
         ),
     )
+
+# Include Routers
+app.include_router(auth_router, prefix="/api")
 
 @app.get("/api/health", tags=["health"])
 def health_check():
