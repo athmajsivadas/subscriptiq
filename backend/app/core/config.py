@@ -7,11 +7,11 @@ class Settings(BaseSettings):
     TZ: str = "Asia/Kolkata"
     EMAIL_BACKEND: str = "console"
     ENABLE_SCHEDULER: bool = False
-    ENABLE_BILLING_SIMULATION: bool = False
+    ENABLE_BILLING_SIMULATION: bool = True
     FRONTEND_URL: str = "http://localhost:5173"
 
     model_config = SettingsConfigDict(
-        env_file=(".env", "../.env"),
+        env_file=(".env", "backend/.env", "../.env"),
         env_file_encoding="utf-8",
         extra="ignore"
     )

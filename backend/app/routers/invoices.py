@@ -1,3 +1,5 @@
+import csv
+import io
 from typing import Optional, List
 from uuid import UUID
 from datetime import datetime, timezone
@@ -60,6 +62,77 @@ def list_invoices(
         total=total,
         page=page,
         page_size=page_size,
+    )
+
+@router.get("/invoices/export/csv")
+def export_invoices_csv(
+    status: Optional[str] = None,
+    customer_id: Optional[UUID] = None,
+    db: Session = Depends(get_db),
+    user: User = Depends(staff_plus),
+):
+    stmt = select(Invoice)
+    filters = []
+    if status:
+        filters.append(Invoice.status == status)
+    if customer_id:
+        filters.append(Invoice.customer_id == customer_id)
+    if filters:
+        stmt = stmt.where(and_(*filters))
+
+    invoices = db.execute(stmt.order_by(Invoice.issue_date.desc(), Invoice.created_at.desc())).scalars().all()
+
+    today = today_ist()
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "Invoice Number",
+        "Customer",
+        "Status",
+        "Issue Date",
+        "Due Date",
+        "Billing Period Start",
+        "Billing Period End",
+        "Subtotal",
+        "Discount Total",
+        "Tax Total",
+        "Grand Total",
+        "Amount Paid",
+        "Balance Due",
+        "Is Overdue",
+        "Days Overdue",
+        "Sent At"
+    ])
+
+    for inv in invoices:
+        is_overdue = inv.status == "confirmed" and inv.balance_due > 0 and inv.due_date < today
+        days_overdue = (today - inv.due_date).days if is_overdue else 0
+        customer_name = inv.customer.company_name if inv.customer else ""
+        writer.writerow([
+            inv.invoice_number,
+            customer_name,
+            inv.status,
+            inv.issue_date.isoformat() if inv.issue_date else "",
+            inv.due_date.isoformat() if inv.due_date else "",
+            inv.billing_period_start.isoformat() if inv.billing_period_start else "",
+            inv.billing_period_end.isoformat() if inv.billing_period_end else "",
+            f"{inv.subtotal:.2f}",
+            f"{inv.discount_total:.2f}",
+            f"{inv.tax_total:.2f}",
+            f"{inv.grand_total:.2f}",
+            f"{inv.amount_paid:.2f}",
+            f"{inv.balance_due:.2f}",
+            "Yes" if is_overdue else "No",
+            days_overdue,
+            inv.sent_at.isoformat() if inv.sent_at else "Not Sent",
+        ])
+
+    csv_data = output.getvalue()
+    filename = f"invoices_export_{today.isoformat()}.csv"
+    return Response(
+        content=csv_data,
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
 
 @router.get("/invoices/{id}", response_model=InvoiceResponse)

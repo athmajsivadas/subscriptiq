@@ -26,3 +26,8 @@ htmlcov/
 node_modules/
 dist/
 build/
+
+# Local PostgreSQL
+pgsql/
+data/
+

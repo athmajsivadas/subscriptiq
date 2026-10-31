@@ -1,11 +1,13 @@
 """Reports router – admin/staff analytics endpoints (spec section 15)."""
 
+import csv
+import io
 from datetime import date, timedelta
 from decimal import Decimal
 from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Response
 from sqlalchemy import select, func, and_, or_, case, literal
 from sqlalchemy.orm import Session
 
@@ -412,3 +414,150 @@ def payments_report(
         page=page,
         page_size=page_size,
     )
+
+
+# ---------------------------------------------------------------------------
+# CSV EXPORT ENDPOINTS
+# ---------------------------------------------------------------------------
+
+@router.get("/export/revenue-csv")
+def export_revenue_csv(
+    date_from: Optional[date] = Query(None),
+    date_to: Optional[date] = Query(None),
+    customer_id: Optional[UUID] = Query(None),
+    db: Session = Depends(get_db),
+    user: User = Depends(admin_only),
+):
+    base = select(Payment).join(Invoice, Invoice.id == Payment.invoice_id)
+    filters = []
+    if date_from:
+        filters.append(Payment.payment_date >= date_from)
+    if date_to:
+        filters.append(Payment.payment_date <= date_to)
+    if customer_id:
+        filters.append(Invoice.customer_id == customer_id)
+    if filters:
+        base = base.where(*filters)
+    base = base.order_by(Payment.payment_date.desc(), Payment.created_at.desc())
+    rows = db.execute(base).scalars().all()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "Payment ID", "Payment Date", "Payment Reference", "Invoice Number",
+        "Customer", "Method", "Amount (INR)", "Note"
+    ])
+    for p in rows:
+        cust_name = p.invoice.customer.company_name if p.invoice and p.invoice.customer else ""
+        inv_num = p.invoice.invoice_number if p.invoice else ""
+        writer.writerow([
+            str(p.id),
+            p.payment_date.isoformat() if p.payment_date else "",
+            p.payment_reference or "",
+            inv_num,
+            cust_name,
+            p.method,
+            f"{p.amount:.2f}",
+            p.note or "",
+        ])
+    today = today_ist()
+    return Response(
+        content=output.getvalue(),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="revenue_report_{today.isoformat()}.csv"'},
+    )
+
+
+@router.get("/export/overdue-csv")
+def export_overdue_csv(
+    customer_id: Optional[UUID] = Query(None),
+    db: Session = Depends(get_db),
+    user: User = Depends(admin_only),
+):
+    td = today_ist()
+    filters = [
+        Invoice.status == "confirmed",
+        Invoice.balance_due > 0,
+        Invoice.due_date < td,
+    ]
+    if customer_id:
+        filters.append(Invoice.customer_id == customer_id)
+    base = select(Invoice).where(*filters).order_by(Invoice.due_date.asc())
+    rows = db.execute(base).scalars().all()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "Invoice Number", "Customer", "Due Date", "Grand Total (INR)",
+        "Balance Due (INR)", "Days Overdue", "Aging Bucket"
+    ])
+    for inv in rows:
+        days = (td - inv.due_date).days
+        bucket = _overdue_bucket(days)
+        cust_name = inv.customer.company_name if inv.customer else ""
+        writer.writerow([
+            inv.invoice_number,
+            cust_name,
+            inv.due_date.isoformat() if inv.due_date else "",
+            f"{inv.grand_total:.2f}",
+            f"{inv.balance_due:.2f}",
+            days,
+            bucket,
+        ])
+    return Response(
+        content=output.getvalue(),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="overdue_aging_report_{td.isoformat()}.csv"'},
+    )
+
+
+@router.get("/export/subscriptions-csv")
+def export_subscriptions_csv(
+    status: Optional[str] = Query(None),
+    customer_id: Optional[UUID] = Query(None),
+    plan_id: Optional[UUID] = Query(None),
+    db: Session = Depends(get_db),
+    user: User = Depends(admin_only),
+):
+    base = select(Subscription)
+    filters = []
+    if status:
+        filters.append(Subscription.status == status)
+    if customer_id:
+        filters.append(Subscription.customer_id == customer_id)
+    if plan_id:
+        filters.append(Subscription.plan_id == plan_id)
+    if filters:
+        base = base.where(*filters)
+    base = base.order_by(Subscription.created_at.desc())
+    rows = db.execute(base).scalars().all()
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "Subscription Number", "Customer", "Plan", "Billing Cycle", "Status",
+        "Start Date", "Expiry Date", "Next Billing Date", "Payment Terms (Days)", "Auto Renew"
+    ])
+    for s in rows:
+        cust_name = s.customer.company_name if s.customer else ""
+        plan_name = s.plan.name if s.plan else ""
+        cycle = s.plan.billing_cycle if s.plan else ""
+        writer.writerow([
+            s.subscription_number,
+            cust_name,
+            plan_name,
+            cycle,
+            s.status,
+            s.start_date.isoformat() if s.start_date else "",
+            s.expiry_date.isoformat() if s.expiry_date else "No Expiry",
+            s.next_billing_date.isoformat() if s.next_billing_date else "N/A",
+            s.payment_terms_days,
+            "Yes" if s.auto_renew else "No",
+        ])
+    today = today_ist()
+    return Response(
+        content=output.getvalue(),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="subscriptions_report_{today.isoformat()}.csv"'},
+    )
+
