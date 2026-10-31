@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminLayout from "./layouts/AdminLayout";
 import StaffLayout from "./layouts/StaffLayout";
 import CustomerLayout from "./layouts/CustomerLayout";
+import AppLayout from "./layouts/AppLayout";
 
 // Auth Pages
 import LoginPage from "./pages/auth/LoginPage";
@@ -28,8 +29,14 @@ import PaymentsPage from "./pages/payments/PaymentsPage";
 import ReportsPage from "./pages/reports/ReportsPage";
 
 // Staff & Customer Pages
+import CustomersPage from "./pages/customers/CustomersPage";
 import StaffOpsPage from "./pages/staff/StaffOpsPage";
 import CustomerPortalPage from "./pages/portal/CustomerPortalPage";
+import PortalPlansPage from "./pages/portal/PortalPlansPage";
+import PortalSubscriptionsPage from "./pages/portal/PortalSubscriptionsPage";
+import PortalInvoicesPage from "./pages/portal/PortalInvoicesPage";
+import PortalPaymentsPage from "./pages/portal/PortalPaymentsPage";
+import PortalProfilePage from "./pages/portal/PortalProfilePage";
 
 export function App() {
   return (
@@ -119,9 +126,9 @@ export function App() {
             path="/quotations"
             element={
               <ProtectedRoute allowedRoles={["admin", "staff"]}>
-                <AdminLayout>
+                <AppLayout>
                   <QuotationsPage />
-                </AdminLayout>
+                </AppLayout>
               </ProtectedRoute>
             }
           />
@@ -129,9 +136,9 @@ export function App() {
             path="/subscriptions"
             element={
               <ProtectedRoute allowedRoles={["admin", "staff"]}>
-                <AdminLayout>
+                <AppLayout>
                   <SubscriptionsPage />
-                </AdminLayout>
+                </AppLayout>
               </ProtectedRoute>
             }
           />
@@ -139,9 +146,9 @@ export function App() {
             path="/invoices"
             element={
               <ProtectedRoute allowedRoles={["admin", "staff"]}>
-                <AdminLayout>
+                <AppLayout>
                   <InvoicesPage />
-                </AdminLayout>
+                </AppLayout>
               </ProtectedRoute>
             }
           />
@@ -149,9 +156,9 @@ export function App() {
             path="/payments"
             element={
               <ProtectedRoute allowedRoles={["admin", "staff"]}>
-                <AdminLayout>
+                <AppLayout>
                   <PaymentsPage />
-                </AdminLayout>
+                </AppLayout>
               </ProtectedRoute>
             }
           />
@@ -178,13 +185,77 @@ export function App() {
             }
           />
 
+          {/* Shared Admin & Staff Routes */}
+          <Route
+            path="/customers"
+            element={
+              <ProtectedRoute allowedRoles={["admin", "staff"]}>
+                <AppLayout>
+                  <CustomersPage />
+                </AppLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/staff/customers" element={<Navigate to="/customers" replace />} />
+          <Route path="/plans" element={<Navigate to="/catalog/plans" replace />} />
+
           {/* Customer Portal */}
           <Route
-            path="/portal/*"
+            path="/portal"
             element={
               <ProtectedRoute allowedRoles={["customer"]}>
                 <CustomerLayout>
                   <CustomerPortalPage />
+                </CustomerLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/portal/plans"
+            element={
+              <ProtectedRoute allowedRoles={["customer"]}>
+                <CustomerLayout>
+                  <PortalPlansPage />
+                </CustomerLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/portal/subscriptions"
+            element={
+              <ProtectedRoute allowedRoles={["customer"]}>
+                <CustomerLayout>
+                  <PortalSubscriptionsPage />
+                </CustomerLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/portal/invoices"
+            element={
+              <ProtectedRoute allowedRoles={["customer"]}>
+                <CustomerLayout>
+                  <PortalInvoicesPage />
+                </CustomerLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/portal/payments"
+            element={
+              <ProtectedRoute allowedRoles={["customer"]}>
+                <CustomerLayout>
+                  <PortalPaymentsPage />
+                </CustomerLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/portal/profile"
+            element={
+              <ProtectedRoute allowedRoles={["customer"]}>
+                <CustomerLayout>
+                  <PortalProfilePage />
                 </CustomerLayout>
               </ProtectedRoute>
             }

@@ -17,6 +17,7 @@ from app.models.all_models import (
     Discount,
     DiscountProduct,
     User,
+    Customer,
 )
 from app.schemas.catalog import (
     TaxRuleCreate, TaxRuleUpdate, TaxRuleResponse,
@@ -24,6 +25,7 @@ from app.schemas.catalog import (
     ProductVariantCreate, ProductVariantUpdate, ProductVariantResponse,
     PlanCreate, PlanUpdate, PlanResponse,
     DiscountCreate, DiscountUpdate, DiscountResponse,
+    CustomerCreate, CustomerResponse,
 )
 
 router = APIRouter(tags=["catalog"])
@@ -270,3 +272,21 @@ def archive_discount(id: UUID, db: Session = Depends(get_db), admin: User = Depe
     discount.is_active = False
     audit(db, admin, "discount.archived", "discount", discount.id, {})
     db.commit()
+
+# --- CUSTOMERS ---
+@router.get("/customers", response_model=List[CustomerResponse])
+def list_customers(db: Session = Depends(get_db), user: User = Depends(staff_plus)):
+    return db.execute(select(Customer).order_by(Customer.created_at.desc())).scalars().all()
+
+@router.post("/customers", status_code=201, response_model=CustomerResponse)
+def create_customer(body: CustomerCreate, db: Session = Depends(get_db), user: User = Depends(staff_plus)):
+    c = Customer(
+        company_name=body.company_name.strip(),
+        phone=body.phone,
+        billing_address=body.billing_address,
+        tax_identifier=body.tax_identifier,
+    )
+    db.add(c)
+    db.commit()
+    db.refresh(c)
+    return c

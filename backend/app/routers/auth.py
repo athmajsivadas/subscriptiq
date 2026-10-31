@@ -1,3 +1,4 @@
+from typing import List, Optional
 import hashlib
 import secrets
 from datetime import datetime, timedelta, timezone
@@ -205,3 +206,11 @@ def create_staff(
 
     db.refresh(staff)
     return UserResponse.model_validate(staff)
+
+@router.get("/users/staff", response_model=List[UserResponse])
+def list_staff(
+    db: Session = Depends(get_db),
+    admin: User = Depends(admin_only),
+):
+    staff_members = db.execute(select(User).where(User.role == "staff").order_by(User.created_at.desc())).scalars().all()
+    return [UserResponse.model_validate(s) for s in staff_members]

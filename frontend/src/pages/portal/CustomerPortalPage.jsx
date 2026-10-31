@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from "react";
 import client from "../../api/client";
-import { Receipt, CheckCircle, Clock } from "lucide-react";
 
 export const CustomerPortalPage = () => {
   const [subs, setSubs] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchPortalData = async () => {
     setLoading(true);
+    setError(null);
     try {
       const [sRes, iRes] = await Promise.all([
-        client.get("/portal/subscriptions"),
-        client.get("/portal/invoices"),
+        client.get("/portal/subscriptions").catch(() => ({ data: [] })),
+        client.get("/portal/invoices").catch(() => ({ data: [] })),
       ]);
-      setSubs(sRes.data || []);
-      setInvoices(iRes.data || []);
+      // Handle both array and paginated responses
+      const subsData = Array.isArray(sRes.data) ? sRes.data : (sRes.data?.items || []);
+      const invsData = Array.isArray(iRes.data) ? iRes.data : (iRes.data?.items || []);
+      setSubs(subsData);
+      setInvoices(invsData);
     } catch (err) {
-      console.error(err);
+      console.error("Portal fetch error:", err);
+      setError(err.message || "Failed to load portal data");
     } finally {
       setLoading(false);
     }
@@ -32,7 +37,7 @@ export const CustomerPortalPage = () => {
       await client.post(`/portal/subscriptions/${id}/${action}`);
       fetchPortalData();
     } catch (err) {
-      alert(`Action failed: ${err.message}`);
+      alert("Action failed: " + (err.message || "Unknown error"));
     }
   };
 
@@ -47,57 +52,99 @@ export const CustomerPortalPage = () => {
       link.click();
       link.remove();
     } catch (err) {
-      alert("Error: " + err.message);
+      alert("Error: " + (err.message || "Failed to download PDF"));
     }
   };
 
+  if (loading) {
+    return (
+      <div style={{ padding: "40px", textAlign: "center", color: "#64748b", fontSize: "14px" }}>
+        Loading your portal data...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ padding: "40px", textAlign: "center", color: "#dc2626", fontSize: "14px" }}>
+        Error: {error}
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-8">
+    <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">Welcome to Your Portal</h2>
-        <p className="text-sm text-slate-500">Manage your active plans, billing history, and invoices</p>
+        <h2 style={{ fontSize: "24px", fontWeight: "700", color: "#0f172a", margin: "0 0 4px 0" }}>
+          Welcome to Your Portal
+        </h2>
+        <p style={{ fontSize: "14px", color: "#64748b", margin: 0 }}>
+          Manage your active plans, billing history, and invoices
+        </p>
       </div>
 
       {/* Subscriptions */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-        <h3 className="font-bold text-base text-slate-900 mb-4">My Subscriptions</h3>
+      <div style={{ background: "#fff", borderRadius: "12px", border: "1px solid #e2e8f0", padding: "24px" }}>
+        <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#0f172a", marginBottom: "16px" }}>
+          My Subscriptions ({subs.length})
+        </h3>
         {subs.length === 0 ? (
-          <p className="text-sm text-slate-400">No active subscriptions found.</p>
+          <p style={{ fontSize: "14px", color: "#94a3b8" }}>No active subscriptions found.</p>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div>
             {subs.map((s) => (
-              <div key={s.id} className="py-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div
+                key={s.id}
+                style={{
+                  padding: "16px 0",
+                  borderBottom: "1px solid #f1f5f9",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "12px",
+                }}
+              >
                 <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-slate-900">Subscription #{s.id}</span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-semibold uppercase ${
-                      s.status === "active" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
-                    }`}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <span style={{ fontWeight: "700", color: "#0f172a" }}>Subscription #{s.id}</span>
+                    <span
+                      style={{
+                        fontSize: "11px",
+                        padding: "2px 8px",
+                        borderRadius: "9999px",
+                        fontWeight: "600",
+                        textTransform: "uppercase",
+                        background: s.status === "active" ? "#ecfdf5" : "#fef3c7",
+                        color: s.status === "active" ? "#047857" : "#b45309",
+                      }}
+                    >
                       {s.status}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Current Period: {s.current_period_start} to {s.current_period_end} | Next Billing: {s.next_billing_date}
+                  <p style={{ fontSize: "12px", color: "#64748b", marginTop: "4px" }}>
+                    Period: {s.current_period_start || "-"} to {s.current_period_end || "-"} | Next Billing:{" "}
+                    {s.next_billing_date || "-"}
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div style={{ display: "flex", gap: "8px" }}>
                   {s.status === "active" && (
                     <>
                       <button
                         onClick={() => handleSubAction(s.id, "pause")}
-                        className="px-3 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 text-xs font-semibold rounded"
+                        style={{ padding: "4px 12px", background: "#fef3c7", color: "#b45309", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "600", cursor: "pointer" }}
                       >
                         Pause
                       </button>
                       <button
                         onClick={() => handleSubAction(s.id, "renew")}
-                        className="px-3 py-1 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 text-xs font-semibold rounded"
+                        style={{ padding: "4px 12px", background: "#e0e7ff", color: "#4338ca", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "600", cursor: "pointer" }}
                       >
                         Renew
                       </button>
                       <button
                         onClick={() => handleSubAction(s.id, "close")}
-                        className="px-3 py-1 bg-red-50 text-red-700 hover:bg-red-100 text-xs font-semibold rounded"
+                        style={{ padding: "4px 12px", background: "#fef2f2", color: "#dc2626", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "600", cursor: "pointer" }}
                       >
                         Cancel
                       </button>
@@ -106,7 +153,7 @@ export const CustomerPortalPage = () => {
                   {s.status === "paused" && (
                     <button
                       onClick={() => handleSubAction(s.id, "resume")}
-                      className="px-3 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-xs font-semibold rounded"
+                      style={{ padding: "4px 12px", background: "#ecfdf5", color: "#047857", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "600", cursor: "pointer" }}
                     >
                       Resume
                     </button>
@@ -119,28 +166,52 @@ export const CustomerPortalPage = () => {
       </div>
 
       {/* Invoices */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-        <h3 className="font-bold text-base text-slate-900 mb-4">My Invoices</h3>
+      <div style={{ background: "#fff", borderRadius: "12px", border: "1px solid #e2e8f0", padding: "24px" }}>
+        <h3 style={{ fontSize: "16px", fontWeight: "700", color: "#0f172a", marginBottom: "16px" }}>
+          My Invoices ({invoices.length})
+        </h3>
         {invoices.length === 0 ? (
-          <p className="text-sm text-slate-400">No invoices available.</p>
+          <p style={{ fontSize: "14px", color: "#94a3b8" }}>No invoices available.</p>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div>
             {invoices.map((inv) => (
-              <div key={inv.id} className="py-3 flex justify-between items-center text-sm">
+              <div
+                key={inv.id}
+                style={{
+                  padding: "12px 0",
+                  borderBottom: "1px solid #f1f5f9",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  fontSize: "14px",
+                }}
+              >
                 <div>
-                  <span className="font-mono font-bold text-slate-900 mr-2">{inv.invoice_number}</span>
-                  <span className="text-xs text-slate-500">Due {inv.due_date}</span>
+                  <span style={{ fontFamily: "monospace", fontWeight: "700", color: "#0f172a", marginRight: "8px" }}>
+                    {inv.invoice_number || `INV-${inv.id}`}
+                  </span>
+                  <span style={{ fontSize: "12px", color: "#64748b" }}>Due {inv.due_date}</span>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="font-bold text-slate-900">₹{parseFloat(inv.total_amount).toFixed(2)}</span>
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-semibold uppercase ${
-                    inv.status === "paid" ? "bg-emerald-50 text-emerald-700" : "bg-blue-50 text-blue-700"
-                  }`}>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <span style={{ fontWeight: "700", color: "#0f172a" }}>
+                    ₹{parseFloat(inv.total_amount || 0).toFixed(2)}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      padding: "2px 8px",
+                      borderRadius: "9999px",
+                      fontWeight: "600",
+                      textTransform: "uppercase",
+                      background: inv.status === "paid" ? "#ecfdf5" : "#eff6ff",
+                      color: inv.status === "paid" ? "#047857" : "#1d4ed8",
+                    }}
+                  >
                     {inv.status}
                   </span>
                   <button
                     onClick={() => handleDownloadPdf(inv.id, inv.invoice_number)}
-                    className="text-xs px-2.5 py-1 bg-slate-100 hover:bg-slate-200 rounded font-medium"
+                    style={{ padding: "4px 10px", background: "#f1f5f9", border: "none", borderRadius: "6px", fontSize: "12px", fontWeight: "500", cursor: "pointer" }}
                   >
                     PDF
                   </button>

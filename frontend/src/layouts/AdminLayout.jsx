@@ -12,6 +12,7 @@ import {
   BarChart3,
   LogOut,
   User,
+  Users,
   ShieldCheck,
   FileCheck2,
 } from "lucide-react";
@@ -28,6 +29,7 @@ export const AdminLayout = ({ children }) => {
     { label: "Plans", href: "/catalog/plans", icon: Layers },
     { label: "Discounts", href: "/catalog/discounts", icon: Percent },
     { label: "Templates", href: "/catalog/templates", icon: FileCheck2 },
+    { label: "Customers", href: "/customers", icon: Users },
     { label: "Quotations", href: "/quotations", icon: FileText },
     { label: "Subscriptions", href: "/subscriptions", icon: Receipt },
     { label: "Invoices", href: "/invoices", icon: Receipt },

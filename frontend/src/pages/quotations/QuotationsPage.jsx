@@ -4,8 +4,16 @@ import { Plus, AlertCircle, ArrowRight, CheckCircle2, Clock } from "lucide-react
 
 export const QuotationsPage = () => {
   const [quotes, setQuotes] = useState([]);
+  const [templates, setTemplates] = useState([]);
+  const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState("");
+  const [selectedCustomer, setSelectedCustomer] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const fetchQuotes = async () => {
     setLoading(true);
@@ -22,6 +30,45 @@ export const QuotationsPage = () => {
   useEffect(() => {
     fetchQuotes();
   }, []);
+
+  const openCreateModal = async () => {
+    setIsModalOpen(true);
+    try {
+      const [tRes, cRes] = await Promise.all([
+        client.get("/quotation-templates"),
+        client.get("/customers"),
+      ]);
+      const tmpls = Array.isArray(tRes.data) ? tRes.data : (tRes.data?.items || []);
+      const custs = Array.isArray(cRes.data) ? cRes.data : (cRes.data?.items || []);
+      setTemplates(tmpls);
+      setCustomers(custs);
+      if (tmpls.length > 0) setSelectedTemplate(tmpls[0].id);
+      if (custs.length > 0) setSelectedCustomer(custs[0].id);
+    } catch (err) {
+      alert("Failed to load templates or customers: " + err.message);
+    }
+  };
+
+  const handleCreateFromTemplate = async (e) => {
+    e.preventDefault();
+    if (!selectedTemplate || !selectedCustomer) {
+      alert("Please select both a template and a customer.");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await client.post("/quotations/from-template", {
+        template_id: selectedTemplate,
+        customer_id: selectedCustomer,
+      });
+      setIsModalOpen(false);
+      fetchQuotes();
+    } catch (err) {
+      alert("Creation failed: " + (err.message || "Error"));
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const handleAction = async (quoteId, action) => {
     try {
@@ -44,9 +91,17 @@ export const QuotationsPage = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-xl font-bold text-slate-900">Quotations</h2>
-        <p className="text-sm text-slate-500">Manage quotations, approvals, and one-click subscription conversion</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-bold text-slate-900">Quotations</h2>
+          <p className="text-sm text-slate-500">Manage quotations, approvals, and one-click subscription conversion</p>
+        </div>
+        <button
+          onClick={openCreateModal}
+          className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors shadow-sm"
+        >
+          <Plus className="h-4 w-4" /> Create from Template
+        </button>
       </div>
 
       {error && (
@@ -137,6 +192,73 @@ export const QuotationsPage = () => {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Modal: Create from Template */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 space-y-4">
+            <h3 className="text-lg font-bold text-slate-900">Create Quotation from Template</h3>
+            <form onSubmit={handleCreateFromTemplate} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Select Template *</label>
+                <select
+                  required
+                  value={selectedTemplate}
+                  onChange={(e) => setSelectedTemplate(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  {templates.length === 0 ? (
+                    <option value="">No templates available</option>
+                  ) : (
+                    templates.map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {t.name} (Plan #{t.plan_id.slice(0, 8)})
+                      </option>
+                    ))
+                  )}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Select Customer *</label>
+                <select
+                  required
+                  value={selectedCustomer}
+                  onChange={(e) => setSelectedCustomer(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  {customers.length === 0 ? (
+                    <option value="">No customers available</option>
+                  ) : (
+                    customers.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.company_name} (ID: {c.id.slice(0, 8)})
+                      </option>
+                    ))
+                  )}
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 border border-slate-200 text-slate-600 rounded-lg text-sm hover:bg-slate-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting || !selectedTemplate || !selectedCustomer}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-semibold shadow-sm disabled:opacity-50"
+                >
+                  {submitting ? "Creating..." : "Create Quotation"}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

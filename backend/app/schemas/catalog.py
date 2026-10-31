@@ -284,3 +284,19 @@ class PaginatedSubscriptions(BaseModel):
     total: int
     page: int
     page_size: int
+
+# 9. Customers
+class CustomerCreate(BaseModel):
+    company_name: str
+    phone: Optional[str] = None
+    billing_address: Optional[str] = None
+    tax_identifier: Optional[str] = None
+
+class CustomerResponse(SchemaBase):
+    id: UUID
+    user_id: Optional[UUID] = None
+    company_name: str
+    phone: Optional[str] = None
+    billing_address: Optional[str] = None
+    tax_identifier: Optional[str] = None
+    created_at: Optional[datetime] = None

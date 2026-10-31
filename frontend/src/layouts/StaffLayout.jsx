@@ -17,7 +17,7 @@ export const StaffLayout = ({ children }) => {
 
   const navItems = [
     { label: "Ops Overview", href: "/staff", icon: LayoutDashboard },
-    { label: "Customers", href: "/staff/customers", icon: Users },
+    { label: "Customers", href: "/customers", icon: Users },
     { label: "Quotations", href: "/quotations", icon: FileText },
     { label: "Subscriptions", href: "/subscriptions", icon: Receipt },
     { label: "Invoices", href: "/invoices", icon: Receipt },
