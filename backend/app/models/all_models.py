@@ -485,6 +485,8 @@ class AuditLog(Base):
     meta = Column(JSONB, nullable=False, default=dict, server_default=text("'{}'::jsonb"))
     created_at = Column(DateTime(timezone=True), nullable=False, default=utcnow, server_default=text("now()"))
 
+    actor = relationship("User")
+
 # 23. sequences
 class Sequence(Base):
     __tablename__ = "sequences"

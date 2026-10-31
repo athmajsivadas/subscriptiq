@@ -17,6 +17,7 @@ from app.routers.payments import router as payments_router, portal_payment_route
 from app.routers.reports import router as reports_router
 from app.routers.portal import router as portal_common_router
 from app.routers.simulate import router as simulate_router
+from app.routers.audit import router as audit_router
 from app.jobs.scheduler import start as start_scheduler
 
 app = FastAPI(
@@ -95,6 +96,7 @@ app.include_router(portal_payment_router, prefix="/api")
 app.include_router(reports_router, prefix="/api")
 app.include_router(portal_common_router, prefix="/api")
 app.include_router(simulate_router, prefix="/api")
+app.include_router(audit_router, prefix="/api")
 
 @app.get("/api/health", tags=["health"])
 def health_check():

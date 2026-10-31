@@ -1,9 +1,12 @@
 import csv
 import io
+import uuid
+from decimal import Decimal
 from typing import Optional, List
 from uuid import UUID
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, Query, Response
+from pydantic import BaseModel, Field
 from sqlalchemy import select, func, and_
 from sqlalchemy.orm import Session
 
@@ -11,13 +14,15 @@ from app.core.database import get_db
 from app.core.permissions import get_current_user, staff_plus, customer_only, current_customer
 from app.core.errors import AppError
 from app.core.clock import today_ist
+from app.core.money import money, ZERO
 from app.services.audit_service import audit
 from app.services.pdf_service import generate_invoice_pdf
-from app.models.all_models import Invoice, InvoiceItem, User
+from app.models.all_models import Invoice, InvoiceItem, Payment, User
 from app.schemas.billing import (
     InvoiceResponse,
     PaginatedInvoices,
     BulkConfirmRequest,
+    PaymentResponse,
 )
 
 router = APIRouter(tags=["invoices"])
@@ -295,3 +300,90 @@ def get_my_invoice(id: UUID, db: Session = Depends(get_db), user: User = Depends
     if not inv:
         raise AppError("NOT_FOUND", "Invoice not found", 404)
     return enrich_invoice(inv)
+
+
+class PortalPaymentRequest(BaseModel):
+    amount: Optional[Decimal] = None
+    method: str = "upi"
+    idempotency_key: Optional[str] = None
+    payment_reference: Optional[str] = None
+    note: Optional[str] = None
+
+
+@portal_invoice_router.post("/invoices/{id}/pay", response_model=PaymentResponse)
+def customer_pay_invoice(
+    id: UUID,
+    body: PortalPaymentRequest,
+    db: Session = Depends(get_db),
+    user: User = Depends(customer_only),
+):
+    cust = current_customer(db, user)
+
+    # Replay idempotency
+    if body.idempotency_key:
+        existing = db.execute(
+            select(Payment).where(Payment.idempotency_key == body.idempotency_key)
+        ).scalar_one_or_none()
+        if existing:
+            return existing
+
+    invoice = (
+        db.execute(
+            select(Invoice)
+            .where(Invoice.id == id, Invoice.customer_id == cust.id)
+            .with_for_update()
+            .execution_options(populate_existing=True)
+        )
+        .scalar_one_or_none()
+    )
+
+    if invoice is None:
+        raise AppError("NOT_FOUND", "Invoice not found", 404)
+
+    if invoice.status == "paid":
+        raise AppError("ALREADY_PAID", "Invoice is already fully paid", 409)
+
+    if invoice.status != "confirmed":
+        raise AppError("INVOICE_NOT_PAYABLE", f"Cannot pay invoice with status {invoice.status}", 409)
+
+    pay_amount = money(body.amount) if body.amount else invoice.balance_due
+
+    if pay_amount <= 0:
+        raise AppError("INVALID_AMOUNT", "Payment amount must be positive", 422)
+
+    if pay_amount > invoice.balance_due:
+        raise AppError("OVERPAYMENT", "Payment exceeds remaining balance due", 422)
+
+    method = body.method if body.method in ("upi", "card", "bank_transfer", "gateway") else "upi"
+    ref = body.payment_reference or f"ONLINE-{uuid.uuid4().hex[:8].upper()}"
+
+    payment = Payment(
+        invoice_id=invoice.id,
+        idempotency_key=body.idempotency_key,
+        payment_reference=ref,
+        method=method,
+        amount=pay_amount,
+        payment_date=today_ist(),
+        note=body.note or "Customer online payment via portal",
+        recorded_by=user.id,
+    )
+
+    invoice.amount_paid = money(invoice.amount_paid + pay_amount)
+    invoice.balance_due = money(invoice.grand_total - invoice.amount_paid)
+    if invoice.balance_due == ZERO:
+        invoice.status = "paid"
+
+    db.add(payment)
+    audit(
+        db,
+        user,
+        "customer.payment_made",
+        "invoice",
+        invoice.id,
+        {"amount": str(pay_amount), "method": method, "reference": ref},
+    )
+
+    db.commit()
+    db.refresh(payment)
+    return payment
+

@@ -15,6 +15,7 @@ import {
   Users,
   ShieldCheck,
   FileCheck2,
+  ScrollText,
 } from "lucide-react";
 
 export const AdminLayout = ({ children }) => {
@@ -35,6 +36,7 @@ export const AdminLayout = ({ children }) => {
     { label: "Invoices", href: "/invoices", icon: Receipt },
     { label: "Payments", href: "/payments", icon: CreditCard },
     { label: "Reports", href: "/reports", icon: BarChart3 },
+    { label: "Audit Trail", href: "/audit-logs", icon: ScrollText },
   ];
 
   return (

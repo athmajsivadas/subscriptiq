@@ -27,6 +27,7 @@ import SubscriptionsPage from "./pages/subscriptions/SubscriptionsPage";
 import InvoicesPage from "./pages/invoices/InvoicesPage";
 import PaymentsPage from "./pages/payments/PaymentsPage";
 import ReportsPage from "./pages/reports/ReportsPage";
+import AuditLogsPage from "./pages/audit/AuditLogsPage";
 
 // Staff & Customer Pages
 import CustomersPage from "./pages/customers/CustomersPage";
@@ -116,6 +117,16 @@ export function App() {
               <ProtectedRoute allowedRoles={["admin"]}>
                 <AdminLayout>
                   <ReportsPage />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/audit-logs"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminLayout>
+                  <AuditLogsPage />
                 </AdminLayout>
               </ProtectedRoute>
             }
