@@ -4,7 +4,7 @@ from uuid import UUID
 
 class RegisterRequest(BaseModel):
     full_name: str = Field(..., min_length=1, max_length=255)
-    email: EmailStr
+    email: str = Field(..., pattern=r"^[^@]+@[^@]+\.[^@]+$")
     password: str
     company_name: str = Field(..., min_length=1, max_length=255)
     phone: Optional[str] = Field(None, max_length=50)
@@ -12,11 +12,11 @@ class RegisterRequest(BaseModel):
     tax_identifier: Optional[str] = Field(None, max_length=100)
 
 class LoginRequest(BaseModel):
-    email: EmailStr
+    email: str = Field(..., pattern=r"^[^@]+@[^@]+\.[^@]+$")
     password: str
 
 class ForgotPasswordRequest(BaseModel):
-    email: EmailStr
+    email: str = Field(..., pattern=r"^[^@]+@[^@]+\.[^@]+$")
 
 class ResetPasswordRequest(BaseModel):
     token: str
@@ -24,7 +24,7 @@ class ResetPasswordRequest(BaseModel):
 
 class StaffCreateRequest(BaseModel):
     full_name: str = Field(..., min_length=1, max_length=255)
-    email: EmailStr
+    email: str = Field(..., pattern=r"^[^@]+@[^@]+\.[^@]+$")
     password: str
 
 class UserResponse(BaseModel):

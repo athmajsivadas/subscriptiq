@@ -9,12 +9,25 @@ from slowapi.errors import RateLimitExceeded
 from app.core.config import settings
 from app.core.errors import AppError, envelope
 from app.routers.auth import router as auth_router, limiter
+from app.routers.catalog import router as catalog_router
+from app.routers.quotations import router as quotations_router
+from app.routers.subscriptions import router as subscriptions_router, portal_router
+from app.routers.invoices import router as invoices_router, portal_invoice_router
+from app.routers.payments import router as payments_router, portal_payment_router
+from app.routers.reports import router as reports_router
+from app.routers.portal import router as portal_common_router
+from app.routers.simulate import router as simulate_router
+from app.jobs.scheduler import start as start_scheduler
 
 app = FastAPI(
     title="SubscriptIQ API",
     description="Subscription Management System Backend",
     version="1.0.0",
 )
+
+@app.on_event("startup")
+def on_startup():
+    start_scheduler()
 
 app.state.limiter = limiter
 
@@ -71,6 +84,17 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 # Include Routers
 app.include_router(auth_router, prefix="/api")
+app.include_router(catalog_router, prefix="/api")
+app.include_router(quotations_router, prefix="/api")
+app.include_router(subscriptions_router, prefix="/api")
+app.include_router(portal_router, prefix="/api")
+app.include_router(invoices_router, prefix="/api")
+app.include_router(portal_invoice_router, prefix="/api")
+app.include_router(payments_router, prefix="/api")
+app.include_router(portal_payment_router, prefix="/api")
+app.include_router(reports_router, prefix="/api")
+app.include_router(portal_common_router, prefix="/api")
+app.include_router(simulate_router, prefix="/api")
 
 @app.get("/api/health", tags=["health"])
 def health_check():
